@@ -462,3 +462,40 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int getoinfo(struct pstat *pInfo)
+{
+	struct proc *p;
+	int i = 0;
+	acquire(&ptable.lock);
+	for(p = ptable.proc; p < &ptable.proc[NPROC]; p++)
+	{
+		if(p->state == ZOMBIE || p->state == EMBRYO)
+		{
+			continue;
+		}
+		if(p->state == UNUSED)
+		{
+			pInfo->inuse[i] = 0;
+		}
+		else{
+			pInfo->inuse[i] = 1;
+		}
+		pInfo->pid[i] = p->pid;
+		pInfo->tickets[i] = p->tickets;
+		pInfo->ticks[i] = p->ticks;
+		i++;
+	}
+	release(&ptable.lock);
+	return 0;
+}
+
+int settickets(int number)
+{
+	if(number < 1 || number == NULL)
+	{
+		return -1;
+	}
+	proc->procTickets = number;
+	return 0;
+}
