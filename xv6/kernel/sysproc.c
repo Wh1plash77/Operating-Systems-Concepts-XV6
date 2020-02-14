@@ -103,18 +103,27 @@ int
 sys_settickets(void)
 {
 	int tickets;
-  if(argint(0, &tickets) < 0)
-    return -1;
+  	if(argint(0, &tickets) < 0)
+	{
+   		 return -1;
+	}
+	else
+	{
+		return settickets(tickets);
 
-	proc->tickets = tickets;
-  return 0;
+	}
 }
-
+	
 int
 sys_getpinfo(void)
 {
-	//struct pstat* stats;
-	//if(argptr(0, stats) < 0)
-	//	return -1;
-	return 0;
+	struct pstat* stats;
+	if(argptr(0, stats) < 0)
+	{
+		return -1;
+	}
+	else
+	{
+		return getpinfo(stats);
+	}
 }
